@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport Vision — 运动智能分析系统</title>
+    <meta name="description" content="纯技术流人体运动识别系统，基于 AI 的羽毛球与网球运动分析">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">⚡</span>
+            <span class="brand-text">SPORT<span class="accent">VISION</span></span>
+            <span class="brand-tag">AI Motion Analysis</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-sport="badminton" id="btn-badminton">
+                <span class="sport-icon">🏸</span> 羽毛球
+            </button>
+            <button class="nav-btn" data-sport="tennis" id="btn-tennis">
+                <span class="sport-icon">🎾</span> 网球
+            </button>
+        </div>
+        <div class="nav-status">
+            <span class="status-dot" id="status-dot"></span>
+            <span class="status-text" id="status-text">就绪</span>
+        </div>
+    </nav>
+
+    <!-- 主容器 -->
+    <main class="main-container" id="main-container">
+        <!-- Hero 区域 (初始状态) -->
+        <section class="hero-section" id="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="hero-line1">运动智能</span>
+                    <span class="hero-line2">分析系统</span>
+                </h1>
+                <p class="hero-subtitle">
+                    基于实时骨骼追踪 & AI 动作识别的羽毛球 / 网球运动分析
+                </p>
+
+                <div class="hero-features">
+                    <div class="feature-card">
+                        <span class="feature-icon">🦴</span>
+                        <span class="feature-label">实时骨骼追踪</span>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🎯</span>
+                        <span class="feature-label">击球动作识别</span>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">📊</span>
+                        <span class="feature-label">生物力学分析</span>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🔥</span>
+                        <span class="feature-label">运动热力图</span>
+                    </div>
+                </div>
+
+                <div class="hero-actions">
+                    <label class="upload-btn" id="upload-btn">
+                        <input type="file" accept="video/*" id="video-upload" hidden>
+                        <span class="btn-icon">📤</span> 上传视频分析
+                    </label>
+                    <button class="demo-btn" id="demo-btn">
+                        <span class="btn-icon">▶️</span> 体验 Demo
+                    </button>
+                </div>
+
+                <!-- Demo 视频选择器 -->
+                <div class="demo-selector" id="demo-selector" style="display:none;">
+                    <h3 class="demo-title">选择 Demo 视频</h3>
+                    <div class="demo-grid" id="demo-grid">
+                        <!-- 动态填充 -->
+                    </div>
+                    <p class="demo-hint">💡 将视频文件放入 <code>demo_videos/</code> 目录即可添加 Demo</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分析界面 (分析状态) -->
+        <section class="analysis-section" id="analysis-section" style="display:none;">
+            <div class="analysis-layout">
+                <!-- 左侧：视频区域 -->
+                <div class="video-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <span class="panel-icon">🎬</span> 实时分析
+                        </h2>
+                        <div class="panel-controls">
+                            <button class="ctrl-btn" id="btn-stop" title="停止">⏹</button>
+                            <button class="ctrl-btn" id="btn-back" title="返回">✖</button>
+                        </div>
+                    </div>
+                    <div class="video-container" id="video-container">
+                        <canvas id="video-canvas"></canvas>
+                        <div class="video-overlay" id="video-overlay">
+                            <div class="loading-skeleton">
+                                <div class="skeleton-body"></div>
+                            </div>
+                            <p>正在加载分析引擎...</p>
+                        </div>
+                        <!-- 进度条 -->
+                        <div class="progress-bar" id="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+                    <!-- 动作时间线 -->
+                    <div class="action-timeline" id="action-timeline">
+                        <h3 class="timeline-title">⚡ 动作时间线</h3>
+                        <div class="timeline-container" id="timeline-container">
+                            <!-- 动态填充 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：数据面板 -->
+                <div class="data-panel">
+                    <!-- 当前动作 -->
+                    <div class="data-card action-card" id="action-card">
+                        <div class="card-header">当前动作</div>
+                        <div class="action-display">
+                            <span class="action-icon" id="action-icon">🧍</span>
+                            <span class="action-name" id="action-name">准备 Ready</span>
+                        </div>
+                        <div class="action-confidence">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="confidence-fill"></div>
+                            </div>
+                            <span class="confidence-text" id="confidence-text">50%</span>
+                        </div>
+                    </div>
+
+                    <!-- 关节角度 -->
+                    <div class="data-card" id="angles-card">
+                        <div class="card-header">🦴 关节角度</div>
+                        <div class="angles-grid" id="angles-grid">
+                            <div class="angle-item">
+                                <canvas class="angle-gauge" id="gauge-right-elbow" width="80" height="80"></canvas>
+                                <span class="angle-label">右肘</span>
+                                <span class="angle-value" id="val-right-elbow">--°</span>
+                            </div>
+                            <div class="angle-item">
+                                <canvas class="angle-gauge" id="gauge-left-elbow" width="80" height="80"></canvas>
+                                <span class="angle-label">左肘</span>
+                                <span class="angle-value" id="val-left-elbow">--°</span>
+                            </div>
+                            <div class="angle-item">
+                                <canvas class="angle-gauge" id="gauge-right-knee" width="80" height="80"></canvas>
+                                <span class="angle-label">右膝</span>
+                                <span class="angle-value" id="val-right-knee">--°</span>
+                            </div>
+                            <div class="angle-item">
+                                <canvas class="angle-gauge" id="gauge-left-knee" width="80" height="80"></canvas>
+                                <span class="angle-label">左膝</span>
+                                <span class="angle-value" id="val-left-knee">--°</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 生物力学 -->
+                    <div class="data-card" id="bio-card">
+                        <div class="card-header">📐 运动力学</div>
+                        <div class="bio-stats">
+                            <div class="stat-row">
+                                <span class="stat-label">手腕速度</span>
+                                <div class="stat-bar-container">
+                                    <div class="stat-bar" id="bar-wrist-speed"></div>
+                                </div>
+                                <span class="stat-value" id="val-wrist-speed">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">身体倾斜</span>
+                                <div class="stat-bar-container">
+                                    <div class="stat-bar" id="bar-body-lean" style="--bar-color: #ffaa33;"></div>
+                                </div>
+                                <span class="stat-value" id="val-body-lean">0°</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">膝盖弯曲</span>
+                                <div class="stat-bar-container">
+                                    <div class="stat-bar" id="bar-knee-bend" style="--bar-color: #aa66ff;"></div>
+                                </div>
+                                <span class="stat-value" id="val-knee-bend">0°</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">对称性</span>
+                                <div class="stat-bar-container">
+                                    <div class="stat-bar" id="bar-symmetry" style="--bar-color: #33ff88;"></div>
+                                </div>
+                                <span class="stat-value" id="val-symmetry">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 动作统计 -->
+                    <div class="data-card" id="stats-card">
+                        <div class="card-header">📊 动作统计</div>
+                        <div class="stats-grid" id="stats-grid">
+                            <!-- 动态填充 -->
+                        </div>
+                    </div>
+
+                    <!-- 运动热力图 -->
+                    <div class="data-card" id="heatmap-card">
+                        <div class="card-header">🔥 运动热力图</div>
+                        <canvas id="heatmap-canvas" width="280" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 脚本 -->
+    <script src="/js/particles.js"></script>
+    <script src="/js/skeleton-renderer.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

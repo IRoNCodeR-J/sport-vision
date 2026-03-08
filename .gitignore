@@ -1,0 +1,46 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+._*
+
+# Uploads (user-generated)
+uploads/
+
+# Demo videos (user-provided, too large for git)
+demo_videos/*.mp4
+demo_videos/*.avi
+demo_videos/*.mov
+demo_videos/*.webm
+demo_videos/*.mkv
+
+# Models (downloaded at runtime)
+models/*.task
+models/*.tflite
+
+# ML artifacts
+*.pt
+*.onnx
+*.mlmodel
+*.mlpackage
+runs/
+
+# Logs
+*.log
